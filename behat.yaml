@@ -1,0 +1,11 @@
+default:
+    gherkin:
+        filters:
+            tags: "~@todo"
+
+    extensions:
+        FriendsOfBehat\VariadicExtension: ~
+
+    suites:
+        app:
+            contexts: []
