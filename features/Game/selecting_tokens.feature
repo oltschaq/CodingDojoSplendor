@@ -5,9 +5,9 @@ Feature: Taking tokens from assortment
 
     Background:
         Given the game has been set up for "jesse@pinkman.com", "walter@white.com", "mike@ehrmantraut.com" and "skyler@white.com" merchants
-        And token piles have been set up for 4 merchants
+        And token piles have been set up for them
 
-    @todo
+    @domain
     Scenario Outline: Taking three gem tokens of different color
         Given current turn is for the "jesse@pinkman.com" merchant
         When I take <colors> gem tokens
