@@ -7,10 +7,11 @@ namespace Tests;
 use App\Game;
 use App\Merchant;
 use Behat\Behat\Context\Context;
-use Behat\Behat\Tester\Exception\PendingException;
 
 final class SelectingTokensContext implements Context
 {
+    private Game $game;
+
     /**
      * @Transform :merchant1
      * @Transform :merchant2
@@ -27,7 +28,7 @@ final class SelectingTokensContext implements Context
      */
     public function theGameHasBeenSetUpForAndMerchants(Merchant $merchant1, Merchant $merchant2, Merchant $merchant3, Merchant $merchant4): void
     {
-        new Game($merchant1, $merchant2, $merchant3, $merchant4);
+        $this->game = new Game($merchant1, $merchant2, $merchant3, $merchant4);
     }
 
     /**
@@ -35,6 +36,14 @@ final class SelectingTokensContext implements Context
      */
     public function tokenPilesHaveBeenSetUpForThem(): void
     {
-        
+        // Intentionally left blank - as token piles are set by default for 4 players
+    }
+
+    /**
+     * @Given current turn is for the :merchant1 merchant
+     */
+    public function currentTurnIsForTheMerchant(Merchant $merchant1)
+    {
+        // Intentionally left blank - as for now there's no need to implement the "end turn" functionality
     }
 }
