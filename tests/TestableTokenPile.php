@@ -1,8 +1,10 @@
 <?php
 
+declare(strict_types=1);
 
-namespace App;
+namespace Tests;
 
+use App\TokenPile;
 
 class TestableTokenPile extends TokenPile
 {

@@ -2,7 +2,9 @@
 
 declare(strict_types=1);
 
-namespace App;
+namespace Tests;
+
+use App\Sack;
 
 final class TestableSack extends Sack
 {

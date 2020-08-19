@@ -3,9 +3,6 @@
 namespace Tests;
 
 use App\Game;
-use App\Sack;
-use App\TestableSack;
-use App\TestableTokenPile;
 use App\TokenPile;
 use Behat\Behat\Context\Context;
 use Behat\Gherkin\Node\TableNode;
@@ -27,6 +24,7 @@ class GameContext implements Context
      * @var string|null
      */
     private $currentMerchantTurn;
+
     /**
      * @var Game
      */
