@@ -35,20 +35,20 @@ Feature: Taking tokens from assortment
     Scenario Outline: Trying to take gem tokens where there is not enough of them
         Given current number of tokens in the pile is
             | onyx | ruby | sapphire | diamond | emerald | gold |
-            | 1    | 2    | 3        | 4       | 5       | 5    |
-        And current turn is for the "walter@white.com" merchant
+            | 1    | 1    | 1        | 1       | 1       | 1    |
+        And current turn is for the "walter" merchant
         When I take "<colors>" gem tokens
         Then I fail to do that
         And in token piles should be <onyx> onyx, <ruby> ruby, <sapphire> sapphire, <diamond> diamond, <emerald> emerald gem tokens and <gold> gold tokens
         Examples:
-            | colors                  | first merchant's gems | second merchant's gems | third merchant's gems | fourth merchant's gems  | onyx | ruby | sapphire | diamond | emerald | gold |
-            | onyx, onyx              | onyx, onyx            | onyx, onyx             | onyx, onyx            | onyx, sapphire, ruby    | 0    | 6    | 6        | 7       | 7       | 5    |
-            | ruby, ruby              | ruby, ruby            | ruby, ruby             | ruby, ruby            | onyx, sapphire, ruby    | 6    | 0    | 6        | 7       | 7       | 5    |
-            | sapphire, sapphire      | sapphire, sapphire    | sapphire, sapphire     | sapphire, sapphire    | onyx, sapphire, ruby    | 6    | 6    | 0        | 7       | 7       | 5    |
-            | diamond, diamond        | diamond, diamond      | diamond, diamond       | diamond, diamond      | diamond, sapphire, ruby | 7    | 6    | 6        | 0       | 7       | 5    |
-            | emerald, emerald        | emerald, emerald      | emerald, emerald       | emerald, emerald      | emerald, sapphire, ruby | 7    | 6    | 6        | 7       | 0       | 5    |
-            | ruby, ruby              | emerald, emerald      | ruby, ruby             | ruby, ruby            | diamond, sapphire, onyx | 6    | 3    | 6        | 6       | 5       | 5    |
-            | sapphire, ruby, emerald | emerald, emerald      | emerald, emerald       | emerald, emerald      | emerald, sapphire, ruby | 7    | 6    | 6        | 7       | 0       | 5    |
+            | colors                  | onyx | ruby | sapphire | diamond | emerald | gold |
+            | onyx, onyx              | 1    | 1    | 1        | 1       | 1       | 1    |
+            | ruby, ruby              | 1    | 1    | 1        | 1       | 1       | 1    |
+            | sapphire, sapphire      | 1    | 1    | 1        | 1       | 1       | 1    |
+            | diamond, diamond        | 1    | 1    | 1        | 1       | 1       | 1    |
+            | emerald, emerald        | 1    | 1    | 1        | 1       | 1       | 1    |
+            | ruby, ruby              | 1    | 1    | 1        | 1       | 1       | 1    |
+            | sapphire, ruby, emerald | 1    | 1    | 1        | 1       | 1       | 1    |
 
     @todo
     Scenario Outline: Cannot end turn if merchant have more then 10 tokens

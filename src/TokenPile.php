@@ -14,7 +14,7 @@ class TokenPile
     /**
      * @var array
      */
-    private $tokens;
+    protected $tokens;
 
     public function __construct()
     {

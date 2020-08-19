@@ -6,14 +6,17 @@ namespace Tests;
 
 use App\Game;
 use App\Sack;
+use App\TestableTokenPile;
 use App\TokenPile;
 use Behat\Behat\Context\Context;
+use Behat\Behat\Tester\Exception\PendingException;
+use Behat\Gherkin\Node\TableNode;
 use Webmozart\Assert\Assert;
 
 class GameContext implements Context
 {
     /**
-     * @var TokenPile
+     * @var TestableTokenPile
      */
     private $tokenPile;
 
@@ -48,7 +51,7 @@ class GameContext implements Context
         foreach ($merchants as $merchant) {
             $this->merchantSacks[$merchant] = new Sack();
         }
-        $this->tokenPile = new TokenPile();
+        $this->tokenPile = new TestableTokenPile();
     }
 
     /**
@@ -124,8 +127,9 @@ class GameContext implements Context
         int $numberOfDiamondTokens,
         int $numberOfEmeraldTokens,
         int $numberOfGoldTokens
-    ): void {
-        Assert::eq($this->tokenPile->amountOfTokens(TokenPile::ONYX),$numberOfOnyxTokens);
+    ): void
+    {
+        Assert::eq($this->tokenPile->amountOfTokens(TokenPile::ONYX), $numberOfOnyxTokens);
         Assert::eq($this->tokenPile->amountOfTokens(TokenPile::EMERALD), $numberOfEmeraldTokens);
         Assert::eq($this->tokenPile->amountOfTokens(TokenPile::DIAMOND), $numberOfDiamondTokens);
         Assert::eq($this->tokenPile->amountOfTokens(TokenPile::SAPPHIRE), $numberOfSapphireTokens);
@@ -147,5 +151,17 @@ class GameContext implements Context
     public function iFailToDoThat(): void
     {
         Assert::false($this->takeFromPileResult);
+    }
+
+    /**
+     * @Given current number of tokens in the pile is
+     */
+    public function currentNumberOfTokensInThePileIs(TableNode $table)
+    {
+        foreach ($table as $colors) {
+            foreach ($colors as $color => $amount) {
+                $this->tokenPile->setTokenAmount($color, $amount);
+            }
+        }
     }
 }
