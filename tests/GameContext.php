@@ -80,9 +80,10 @@ class GameContext implements Context
     public function iShouldHaveInMyGemSackGemTokens(string $gems)
     {
         $gemColors = explode(', ', $gems);
+        $colourCount = array_count_values($gemColors);
 
         foreach ($gemColors as $gemColor) {
-            Assert::eq(1, $this->merchantSacks[$this->currentMerchantTurn]->amountOfTokens($gemColor));
+            Assert::eq($colourCount[$gemColor], $this->merchantSacks[$this->currentMerchantTurn]->amountOfTokens($gemColor));
         }
     }
 

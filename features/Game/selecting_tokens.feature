@@ -31,7 +31,7 @@ Feature: Taking tokens from assortment
             | diamond, diamond   | 7    | 7    | 7        | 5       | 7       | 5    |
             | emerald, emerald   | 7    | 7    | 7        | 7       | 5       | 5    |
 
-    @todo
+    @domain
     Scenario Outline: Trying to take gem tokens where there is not enough of them
         Given "walter@white.com" has taken <first merchant's gems> gem tokens
         And "mike@ehrmantraut.com" has taken <second merchant's gems> gem tokens
