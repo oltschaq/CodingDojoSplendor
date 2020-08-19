@@ -8,7 +8,7 @@ Feature: Taking tokens from assortment
 
     @domain
     Scenario Outline: Taking three gem tokens of different color
-        Given current turn is for the "jesse@pinkman.com" merchant
+        Given current turn is for the "jesse" merchant
         When I take "<colors>" gem tokens
         Then I should have in my gem sack "<colors>" gem tokens
         And in token piles should be "<onyx>" onyx, "<ruby>" ruby, "<sapphire>" sapphire, "<diamond>" diamond, "<emerald>" emerald gem tokens and "<gold>" gold tokens
@@ -17,12 +17,11 @@ Feature: Taking tokens from assortment
             | onyx, ruby, sapphire   | 6    | 6    | 6        | 7       | 7       | 5    |
             | diamond, emerald, ruby | 7    | 6    | 7        | 6       | 6       | 5    |
 
-    @todo
+    @domain
     Scenario Outline: Taking two gem tokens of the same color
-        Given current turn is for the "jesse@pinkman.com" merchant
-        When I take <colors> gem tokens
-        And I end turn
-        Then I should have in my gem sack <colors> gem tokens
+        Given current turn is for the "jesse" merchant
+        When I take "<colors>" gem tokens
+        Then I should have in my gem sack "<colors>" gem tokens
         And in token piles should be <onyx> onyx, <ruby> ruby, <sapphire> sapphire, <diamond> diamond, <emerald> emerald gem tokens and <gold> gold tokens
         Examples:
             | colors             | onyx | ruby | sapphire | diamond | emerald | gold |

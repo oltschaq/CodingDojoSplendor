@@ -7,7 +7,6 @@ namespace Tests;
 use App\Sack;
 use App\TokenPile;
 use Behat\Behat\Context\Context;
-use Behat\Behat\Tester\Exception\PendingException;
 use Webmozart\Assert\Assert;
 
 class GameContext implements Context
@@ -37,6 +36,7 @@ class GameContext implements Context
         foreach ($merchants as $merchant) {
             $this->merchantSacks[$merchant] = new Sack();
         }
+        $this->tokenPile = new TokenPile();
     }
 
     /**
@@ -44,7 +44,6 @@ class GameContext implements Context
      */
     public function theGameHasBeenSetUpForAndMerchants($arg1, $arg2, $arg3, $arg4): void
     {
-        $this->tokenPile = new TokenPile();
     }
 
     /**
@@ -60,7 +59,7 @@ class GameContext implements Context
      */
     public function iTakeOnyxRubySapphireGemTokens(string $gems): void
     {
-        $gemColors = explode($gems);
+        $gemColors = explode(', ', $gems);
         foreach ($gemColors as $gemColor) {
             $this->tokenPile->take($gemColor, 1);
             $this->merchantSacks[$this->currentMerchantTurn]->give($gemColor, 1);
@@ -80,7 +79,7 @@ class GameContext implements Context
      */
     public function iShouldHaveInMyGemSackGemTokens(string $gems)
     {
-        $gemColors = explode(',', $gems);
+        $gemColors = explode(', ', $gems);
 
         foreach ($gemColors as $gemColor) {
             Assert::eq(1, $this->merchantSacks[$this->currentMerchantTurn]->amountOfTokens($gemColor));
@@ -109,10 +108,10 @@ class GameContext implements Context
     )
     {
         Assert::eq($this->tokenPile->amountOfTokens(TokenPile::ONYX),$numberOfOnyxTokens);
-        Assert::eq($this->tokenPile->amountOfTokens(TokenPile::EMERALD), $numberOfRubyTokens);
-        Assert::eq($this->tokenPile->amountOfTokens(TokenPile::DIAMOND), $numberOfSapphireTokens);
-        Assert::eq($this->tokenPile->amountOfTokens(TokenPile::SAPPHIRE), $numberOfDiamondTokens);
-        Assert::eq($this->tokenPile->amountOfTokens(TokenPile::RUBY), $numberOfEmeraldTokens);
+        Assert::eq($this->tokenPile->amountOfTokens(TokenPile::EMERALD), $numberOfEmeraldTokens);
+        Assert::eq($this->tokenPile->amountOfTokens(TokenPile::DIAMOND), $numberOfDiamondTokens);
+        Assert::eq($this->tokenPile->amountOfTokens(TokenPile::SAPPHIRE), $numberOfSapphireTokens);
+        Assert::eq($this->tokenPile->amountOfTokens(TokenPile::RUBY), $numberOfRubyTokens);
         Assert::eq($this->tokenPile->amountOfTokens(TokenPile::GOLD), $numberOfGoldTokens);
     }
 }
