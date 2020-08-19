@@ -6,7 +6,7 @@ namespace App;
 
 class Sack
 {
-    private $gems = [];
+    protected $gems = [];
 
     public function amountOfTokens(string $color): int
     {

@@ -65,10 +65,10 @@ Feature: Taking tokens from assortment
 
     @domain
     Scenario: Cannot end turn if merchant have more then 10 tokens
-        Given "walter" has "11" gems in his sack
+        Given "walter" has 11 gems in his sack
         And current turn is for the "walter" merchant
         When I try to end turn
-        But I fail to end turn
+        Then I fail to end turn
 
     @todo
     Scenario Outline: Retuning redundant gem tokens

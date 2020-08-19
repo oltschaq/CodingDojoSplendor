@@ -1,11 +1,10 @@
 <?php
 
-
 namespace Tests;
-
 
 use App\Game;
 use App\Sack;
+use App\TestableSack;
 use App\TestableTokenPile;
 use App\TokenPile;
 use Behat\Behat\Context\Context;
@@ -20,7 +19,7 @@ class GameContext implements Context
     private $tokenPile;
 
     /**
-     * @var Sack[]
+     * @var TestableSack[]
      */
     private $merchantSacks = [];
 
@@ -39,6 +38,11 @@ class GameContext implements Context
     private $takeFromPileResult = false;
 
     /**
+     * @var bool
+     */
+    private $resultEndTurn = false;
+
+    /**
      * @Given the game has been set up for :merchants merchants
      */
     public function theGameHasBeenSetUpForMerchants(string $merchants): void
@@ -48,7 +52,7 @@ class GameContext implements Context
         $merchants = explode(', ', $merchants);
 
         foreach ($merchants as $merchant) {
-            $this->merchantSacks[$merchant] = new Sack();
+            $this->merchantSacks[$merchant] = new TestableSack();
         }
         $this->tokenPile = new TestableTokenPile();
     }
@@ -71,25 +75,25 @@ class GameContext implements Context
     /**
      * @Given :merchantName has :gemsCount gems in his sack
      */
-    public function hasGemsInHisSack(string $merchantName, int $gemsCount)
+    public function hasGemsInHisSack(string $merchantName, int $gemsCount): void
     {
-
+        $this->merchantSacks[$merchantName]->setTokenAmount(TokenPile::DIAMOND, $gemsCount);
     }
 
     /**
      * @When I try to end turn
      */
-    public function iTryToEndTurn()
+    public function iTryToEndTurn(): void
     {
-
+        $this->resultEndTurn = $this->game->endTurn();
     }
 
     /**
      * @When I fail to end turn
      */
-    public function iFailToEndTurn()
+    public function iFailToEndTurn(): void
     {
-
+        Assert::false($this->resultEndTurn);
     }
 
     /**
