@@ -33,14 +33,13 @@ Feature: Taking tokens from assortment
 
     @domain
     Scenario Outline: Trying to take gem tokens where there is not enough of them
-        Given "walter@white.com" has taken <first merchant's gems> gem tokens
-        And "mike@ehrmantraut.com" has taken <second merchant's gems> gem tokens
-        And "skyler@white.com" has taken <third merchant's gems> gem tokens
-        And "jesse@pinkman.com" has taken <fourth merchant's gems> gem tokens
+        Given "walter" has <first merchant's gems> gem tokens
+        And "mike" has <second merchant's gems> gem tokens
+        And "skyler" has <third merchant's gems> gem tokens
+        And "jesse" has <fourth merchant's gems> gem tokens
         And current turn is for the "walter@white.com" merchant
-        When I try to take <colors>
-        Then I should not be able to do that
-        And in token piles still should be <onyx> onyx, <ruby> ruby, <sapphire> sapphire, <diamond> diamond, <emerald> emerald gem tokens and <gold> gold tokens
+        When I fail to take "<colors>" gem tokens
+        And in token piles should be <onyx> onyx, <ruby> ruby, <sapphire> sapphire, <diamond> diamond, <emerald> emerald gem tokens and <gold> gold tokens
         And I should not be able to end turn
         Examples:
             | colors                  | first merchant's gems | second merchant's gems | third merchant's gems | fourth merchant's gems  | onyx | ruby | sapphire | diamond | emerald | gold |

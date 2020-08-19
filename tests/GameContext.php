@@ -4,9 +4,11 @@
 namespace Tests;
 
 
+use App\Game;
 use App\Sack;
 use App\TokenPile;
 use Behat\Behat\Context\Context;
+use Behat\Behat\Tester\Exception\PendingException;
 use Webmozart\Assert\Assert;
 
 class GameContext implements Context
@@ -25,12 +27,19 @@ class GameContext implements Context
      * @var string|null
      */
     private $currentMerchantTurn;
+    /**
+     * @var Game
+     */
+    private $game;
+
 
     /**
      * @Given the game has been set up for :merchants merchants
      */
     public function theGameHasBeenSetUpForMerchants(string $merchants): void
     {
+        $this->game = new Game();
+
         $merchants = explode(',', $merchants);
 
         foreach ($merchants as $merchant) {
@@ -58,6 +67,17 @@ class GameContext implements Context
      * @When I take :gems gem tokens
      */
     public function iTakeOnyxRubySapphireGemTokens(string $gems): void
+    {
+        $gemColors = explode(', ', $gems);
+        foreach ($gemColors as $gemColor) {
+            $this->tokenPile->take($gemColor, 1);
+            $this->merchantSacks[$this->currentMerchantTurn]->give($gemColor, 1);
+        }
+    }
+    /**
+     * @When I fail to take :gems gem tokens
+     */
+    public function iFailTakeOnyxRubySapphireGemTokens(string $gems): void
     {
         $gemColors = explode(', ', $gems);
         foreach ($gemColors as $gemColor) {
@@ -114,5 +134,13 @@ class GameContext implements Context
         Assert::eq($this->tokenPile->amountOfTokens(TokenPile::SAPPHIRE), $numberOfSapphireTokens);
         Assert::eq($this->tokenPile->amountOfTokens(TokenPile::RUBY), $numberOfRubyTokens);
         Assert::eq($this->tokenPile->amountOfTokens(TokenPile::GOLD), $numberOfGoldTokens);
+    }
+
+    /**
+     * @Given I should not be able to end turn
+     */
+    public function iShouldNotBeAbleToEndTurn()
+    {
+        Assert::false($this->game->endTurn());
     }
 }
