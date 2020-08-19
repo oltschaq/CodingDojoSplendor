@@ -4,13 +4,12 @@ Feature: Taking tokens from assortment
     I want to gather tokens
 
     Background:
-        Given the game has been set up for "jesse@pinkman.com", "walter@white.com", "mike@ehrmantraut.com" and "skyler@white.com" merchants
+        Given the game has been set up for "jesse, walter, mike, skyler" merchants
 
     @domain
     Scenario Outline: Taking three gem tokens of different color
         Given current turn is for the "jesse@pinkman.com" merchant
-        When I take <colors> gem tokens
-        And I end turn
+        When I take "<colors>" gem tokens
         Then I should have in my gem sack "<colors>" gem tokens
         And in token piles should be "<onyx>" onyx, "<ruby>" ruby, "<sapphire>" sapphire, "<diamond>" diamond, "<emerald>" emerald gem tokens and "<gold>" gold tokens
         Examples:

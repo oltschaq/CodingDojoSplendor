@@ -7,6 +7,7 @@ namespace Tests;
 use App\Sack;
 use App\TokenPile;
 use Behat\Behat\Context\Context;
+use Behat\Behat\Tester\Exception\PendingException;
 use Webmozart\Assert\Assert;
 
 class GameContext implements Context
@@ -17,35 +18,53 @@ class GameContext implements Context
     private $tokenPile;
 
     /**
-     * @Given the game has been set up for :arg1, :arg2, :arg3 and :arg4 merchants
+     * @var Sack[]
      */
-    public function theGameHasBeenSetUpForAndMerchants($arg1, $arg2, $arg3, $arg4)
+    private $merchantSacks = [];
+
+    /**
+     * @var string|null
+     */
+    private $currentMerchantTurn;
+
+    /**
+     * @Given the game has been set up for :merchants merchants
+     */
+    public function theGameHasBeenSetUpForMerchants(string $merchants): void
+    {
+        $merchants = explode(',', $merchants);
+
+        foreach ($merchants as $merchant) {
+            $this->merchantSacks[$merchant] = new Sack();
+        }
+    }
+
+    /**
+     * @Given the game has been set up for :firstMerchant, :secondMerchant, :thirdMerchant and :fourthMerchant merchants
+     */
+    public function theGameHasBeenSetUpForAndMerchants($arg1, $arg2, $arg3, $arg4): void
     {
         $this->tokenPile = new TokenPile();
     }
 
     /**
-     * @Given current turn is for the :arg1 merchant
+     * @Given current turn is for the :merchant merchant
      */
-    public function currentTurnIsForTheMerchant($arg1)
+    public function currentTurnIsForTheMerchant(string $merchant): void
     {
-        throw new PendingException();
+        $this->currentMerchantTurn = $merchant;
     }
 
     /**
-     * @When I take onyx, ruby, sapphire gem tokens
+     * @When I take :gems gem tokens
      */
-    public function iTakeOnyxRubySapphireGemTokens()
+    public function iTakeOnyxRubySapphireGemTokens(string $gems): void
     {
-        //throw new PendingException();
-    }
-
-    /**
-     * @When I end turn
-     */
-    public function iEndTurn()
-    {
-        //throw new PendingException();
+        $gemColors = explode($gems);
+        foreach ($gemColors as $gemColor) {
+            $this->tokenPile->take($gemColor, 1);
+            $this->merchantSacks[$this->currentMerchantTurn]->give($gemColor, 1);
+        }
     }
 
     /**
@@ -62,12 +81,10 @@ class GameContext implements Context
     public function iShouldHaveInMyGemSackGemTokens(string $gems)
     {
         $gemColors = explode(',', $gems);
-        $sack = new Sack();
 
         foreach ($gemColors as $gemColor) {
-            Assert::eq(1, $sack->amountOfTokens($gemColor));
+            Assert::eq(1, $this->merchantSacks[$this->currentMerchantTurn]->amountOfTokens($gemColor));
         }
-
     }
 
     /**
@@ -98,5 +115,4 @@ class GameContext implements Context
         Assert::eq($this->tokenPile->amountOfTokens(TokenPile::RUBY), $numberOfEmeraldTokens);
         Assert::eq($this->tokenPile->amountOfTokens(TokenPile::GOLD), $numberOfGoldTokens);
     }
-
 }

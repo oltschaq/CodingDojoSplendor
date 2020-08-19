@@ -1,10 +1,6 @@
 <?php
 
-
 namespace App;
-
-
-use http\Encoding\Stream;
 
 class TokenPile
 {
@@ -35,5 +31,10 @@ class TokenPile
     public function amountOfTokens(string $color): int
     {
         return $this->tokens[$color] ?? 0;
+    }
+
+    public function take(string $color, int $amount): void
+    {
+        $this->tokens[$color] -= $amount;
     }
 }

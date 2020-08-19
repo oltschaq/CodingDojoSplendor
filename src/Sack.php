@@ -12,4 +12,9 @@ class Sack
     {
         return $this->gems[$color] ?? 0;
     }
+
+    public function give(string $color, int $amount): void
+    {
+        $this->gems[$color] += $amount;
+    }
 }
