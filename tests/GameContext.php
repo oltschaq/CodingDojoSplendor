@@ -8,7 +8,6 @@ use App\Game;
 use App\Sack;
 use App\TokenPile;
 use Behat\Behat\Context\Context;
-use Behat\Behat\Tester\Exception\PendingException;
 use Webmozart\Assert\Assert;
 
 class GameContext implements Context
@@ -32,6 +31,10 @@ class GameContext implements Context
      */
     private $game;
 
+    /**
+     * @var bool
+     */
+    private $takeFromPileResult = false;
 
     /**
      * @Given the game has been set up for :merchants merchants
@@ -69,27 +72,22 @@ class GameContext implements Context
     public function iTakeOnyxRubySapphireGemTokens(string $gems): void
     {
         $gemColors = explode(', ', $gems);
-        foreach ($gemColors as $gemColor) {
-            $this->tokenPile->take($gemColor, 1);
-            $this->merchantSacks[$this->currentMerchantTurn]->give($gemColor, 1);
-        }
-    }
-    /**
-     * @When I fail to take :gems gem tokens
-     */
-    public function iFailTakeOnyxRubySapphireGemTokens(string $gems): void
-    {
-        $gemColors = explode(', ', $gems);
-        foreach ($gemColors as $gemColor) {
-            $this->tokenPile->take($gemColor, 1);
-            $this->merchantSacks[$this->currentMerchantTurn]->give($gemColor, 1);
+        if (count($gemColors) === 3) {
+            $this->takeFromPileResult = $this->tokenPile->takeThree($gemColors[0], $gemColors[1], $gemColors[2]);
+            $this->merchantSacks[$this->currentMerchantTurn]->give($gemColors[0], 1);
+            $this->merchantSacks[$this->currentMerchantTurn]->give($gemColors[1], 1);
+            $this->merchantSacks[$this->currentMerchantTurn]->give($gemColors[2], 1);
+        } else {
+            $this->takeFromPileResult = $this->tokenPile->takeTwo($gemColors[0]);
+            $this->merchantSacks[$this->currentMerchantTurn]->give($gemColors[0], 1);
+            $this->merchantSacks[$this->currentMerchantTurn]->give($gemColors[0], 1);
         }
     }
 
     /**
      * @When I take diamond, emerald, ruby gem tokens
      */
-    public function iTakeDiamondEmeraldRubyGemTokens()
+    public function iTakeDiamondEmeraldRubyGemTokens(): void
     {
         //throw new PendingException();
     }
@@ -97,20 +95,20 @@ class GameContext implements Context
     /**
      * @Then I should have in my gem sack :gems gem tokens
      */
-    public function iShouldHaveInMyGemSackGemTokens(string $gems)
+    public function iShouldHaveInMyGemSackGemTokens(string $gems): void
     {
         $gemColors = explode(', ', $gems);
-        $colourCount = array_count_values($gemColors);
+        $colorCount = array_count_values($gemColors);
 
         foreach ($gemColors as $gemColor) {
-            Assert::eq($colourCount[$gemColor], $this->merchantSacks[$this->currentMerchantTurn]->amountOfTokens($gemColor));
+            Assert::eq($colorCount[$gemColor], $this->merchantSacks[$this->currentMerchantTurn]->amountOfTokens($gemColor));
         }
     }
 
     /**
      * @Then I should have in my gem sack diamond, emerald, ruby gem tokens
      */
-    public function iShouldHaveInMyGemSackDiamondEmeraldRubyGemTokens()
+    public function iShouldHaveInMyGemSackDiamondEmeraldRubyGemTokens(): void
     {
 
     }
@@ -126,8 +124,7 @@ class GameContext implements Context
         int $numberOfDiamondTokens,
         int $numberOfEmeraldTokens,
         int $numberOfGoldTokens
-    )
-    {
+    ): void {
         Assert::eq($this->tokenPile->amountOfTokens(TokenPile::ONYX),$numberOfOnyxTokens);
         Assert::eq($this->tokenPile->amountOfTokens(TokenPile::EMERALD), $numberOfEmeraldTokens);
         Assert::eq($this->tokenPile->amountOfTokens(TokenPile::DIAMOND), $numberOfDiamondTokens);
@@ -137,10 +134,18 @@ class GameContext implements Context
     }
 
     /**
-     * @Given I should not be able to end turn
+     * @Then I should not be able to end turn
      */
-    public function iShouldNotBeAbleToEndTurn()
+    public function iShouldNotBeAbleToEndTurn(): void
     {
         Assert::false($this->game->endTurn());
+    }
+
+    /**
+     * @Then I fail to do that
+     */
+    public function iFailToDoThat(): void
+    {
+        Assert::false($this->takeFromPileResult);
     }
 }

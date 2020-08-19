@@ -33,12 +33,20 @@ class TokenPile
         return $this->tokens[$color] ?? 0;
     }
 
-    private function takeTwo(string $color):bool {
+    public function takeTwo(string $color): bool
+    {
+        $this->take($color, 2);
 
+        return true;
     }
 
-    private function takeThree(string $fistColor, string $secondColor, string $thirdColor):bool {
+    public function takeThree(string $fistColor, string $secondColor, string $thirdColor): bool
+    {
+        $this->take($fistColor, 1);
+        $this->take($secondColor, 1);
+        $this->take($thirdColor, 1);
 
+        return true;
     }
 
     private function take(string $color, int $amount): void
