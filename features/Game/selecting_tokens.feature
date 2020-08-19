@@ -48,20 +48,27 @@ Feature: Taking tokens from assortment
             | diamond, diamond        | 1    | 1    | 1        | 1       | 1       | 1    |
             | emerald, emerald        | 1    | 1    | 1        | 1       | 1       | 1    |
             | ruby, ruby              | 1    | 1    | 1        | 1       | 1       | 1    |
-            | sapphire, ruby, emerald | 1    | 1    | 1        | 1       | 1       | 1    |
 
-    @todo
-    Scenario Outline: Cannot end turn if merchant have more then 10 tokens
-        Given "walter@white.com" has taken in <first turn>, <second turn> and <third turn> gem tokens
-        And current turn is for the "walter@white.com" merchant
-        When I take <colors> gem tokens
-        Then I should have in my gem sack <colors>, <first turn>, <second turn> and <third turn> gem tokens
+
+    @domain
+    Scenario Outline: Trying to take gem tokens where there is not enough of them
+        Given current number of tokens in the pile is
+            | onyx | ruby | sapphire | diamond | emerald | gold |
+            | 1    | 0    | 0        | 1       | 0       | 1    |
+        And current turn is for the "walter" merchant
+        When I take "<colors>" gem tokens
+        Then I fail to do that
         And in token piles should be <onyx> onyx, <ruby> ruby, <sapphire> sapphire, <diamond> diamond, <emerald> emerald gem tokens and <gold> gold tokens
-        But I should not be able to end turn
         Examples:
-            | colors                 | first turn          | second turn            | third turn              | onyx | ruby | sapphire | diamond | emerald | gold |
-            | onyx, onyx             | onyx, ruby, emerald | onyx, emerald, diamond | sapphire, diamond, ruby | 3    | 5    | 6        | 5       | 5       | 5    |
-            | onyx, emerald, diamond | onyx, ruby, emerald | onyx, emerald, diamond | sapphire, diamond, ruby | 4    | 5    | 6        | 4       | 4       | 5    |
+            | colors                  | onyx | ruby | sapphire | diamond | emerald | gold |
+            | sapphire, ruby, emerald | 1    | 0    | 0        | 1       | 0       | 1    |
+
+    @domain
+    Scenario: Cannot end turn if merchant have more then 10 tokens
+        Given "walter" has "11" gems in his sack
+        And current turn is for the "walter" merchant
+        When I try to end turn
+        But I fail to end turn
 
     @todo
     Scenario Outline: Retuning redundant gem tokens

@@ -9,7 +9,6 @@ use App\Sack;
 use App\TestableTokenPile;
 use App\TokenPile;
 use Behat\Behat\Context\Context;
-use Behat\Behat\Tester\Exception\PendingException;
 use Behat\Gherkin\Node\TableNode;
 use Webmozart\Assert\Assert;
 
@@ -46,7 +45,7 @@ class GameContext implements Context
     {
         $this->game = new Game();
 
-        $merchants = explode(',', $merchants);
+        $merchants = explode(', ', $merchants);
 
         foreach ($merchants as $merchant) {
             $this->merchantSacks[$merchant] = new Sack();
@@ -67,6 +66,30 @@ class GameContext implements Context
     public function currentTurnIsForTheMerchant(string $merchant): void
     {
         $this->currentMerchantTurn = $merchant;
+    }
+
+    /**
+     * @Given :merchantName has :gemsCount gems in his sack
+     */
+    public function hasGemsInHisSack(string $merchantName, int $gemsCount)
+    {
+
+    }
+
+    /**
+     * @When I try to end turn
+     */
+    public function iTryToEndTurn()
+    {
+
+    }
+
+    /**
+     * @When I fail to end turn
+     */
+    public function iFailToEndTurn()
+    {
+
     }
 
     /**

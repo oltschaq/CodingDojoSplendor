@@ -35,6 +35,10 @@ class TokenPile
 
     public function takeTwo(string $color): bool
     {
+        if ($this->tokens[$color] < 2) {
+            return false;
+        }
+
         $this->take($color, 2);
 
         return true;
@@ -42,12 +46,25 @@ class TokenPile
 
     public function takeThree(string $fistColor, string $secondColor, string $thirdColor): bool
     {
+        if ($this->tokens[$fistColor] < 1) {
+            return false;
+        }
+
+        if ($this->tokens[$secondColor] < 1) {
+            return false;
+        }
+
+        if ($this->tokens[$thirdColor] < 1) {
+            return false;
+        }
+
         $this->take($fistColor, 1);
         $this->take($secondColor, 1);
         $this->take($thirdColor, 1);
 
         return true;
     }
+
 
     private function take(string $color, int $amount): void
     {
