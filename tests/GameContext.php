@@ -4,6 +4,8 @@
 namespace Tests;
 
 
+use App\Sack;
+use App\TokenPile;
 use Behat\Behat\Context\Context;
 use Webmozart\Assert\Assert;
 
@@ -35,7 +37,7 @@ class GameContext implements Context
      */
     public function iTakeOnyxRubySapphireGemTokens()
     {
-        throw new PendingException();
+        //throw new PendingException();
     }
 
     /**
@@ -43,24 +45,30 @@ class GameContext implements Context
      */
     public function iEndTurn()
     {
-        throw new PendingException();
+        //throw new PendingException();
     }
 
-    /**
-     * @Then I should have in my gem sack onyx, ruby, sapphire gem tokens
-     */
-    public function iShouldHaveInMyGemSackOnyxRubySapphireGemTokens()
-    {
-        throw new PendingException();
-    }
     /**
      * @When I take diamond, emerald, ruby gem tokens
      */
     public function iTakeDiamondEmeraldRubyGemTokens()
     {
-        throw new PendingException();
+        //throw new PendingException();
     }
 
+    /**
+     * @Then I should have in my gem sack :gems gem tokens
+     */
+    public function iShouldHaveInMyGemSackGemTokens(string $gems)
+    {
+        $gemColors = explode(',', $gems);
+        $sack = new Sack();
+
+        foreach ($gemColors as $gemColor) {
+            Assert::eq(1, $sack->amountOfTokens($gemColor));
+        }
+
+    }
 
     /**
      * @Then I should have in my gem sack diamond, emerald, ruby gem tokens
@@ -70,19 +78,25 @@ class GameContext implements Context
 
     }
 
+
     /**
-     * @Then in token piles should be :arg1 onyx, :arg2 ruby, :arg3 sapphire, :arg4 diamond, :arg5 emerald gem tokens and :arg6 gold tokens
+     * @Then in token piles should be :numberOfOnyxTokens onyx, :numberOfRubyTokens ruby, :numberOfSapphireTokens sapphire, :numberOfDiamondTokens diamond, :numberOfEmeraldTokens emerald gem tokens and :numberOfGoldTokens gold tokens
      */
     public function inTokenPilesShouldBeOnyxRubySapphireDiamondEmeraldGemTokensAndGoldTokens(
         int $numberOfOnyxTokens,
-        $arg2,
-        $arg3,
-        $arg4,
-        $arg5,
-        $arg6
+        int $numberOfRubyTokens,
+        int $numberOfSapphireTokens,
+        int $numberOfDiamondTokens,
+        int $numberOfEmeraldTokens,
+        int $numberOfGoldTokens
     )
     {
         Assert::eq($this->tokenPile->amountOfTokens(TokenPile::ONYX),$numberOfOnyxTokens);
+        Assert::eq($this->tokenPile->amountOfTokens(TokenPile::EMERALD), $numberOfRubyTokens);
+        Assert::eq($this->tokenPile->amountOfTokens(TokenPile::DIAMOND), $numberOfSapphireTokens);
+        Assert::eq($this->tokenPile->amountOfTokens(TokenPile::SAPPHIRE), $numberOfDiamondTokens);
+        Assert::eq($this->tokenPile->amountOfTokens(TokenPile::RUBY), $numberOfEmeraldTokens);
+        Assert::eq($this->tokenPile->amountOfTokens(TokenPile::GOLD), $numberOfGoldTokens);
     }
 
 }

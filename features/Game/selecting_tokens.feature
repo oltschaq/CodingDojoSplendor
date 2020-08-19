@@ -11,7 +11,7 @@ Feature: Taking tokens from assortment
         Given current turn is for the "jesse@pinkman.com" merchant
         When I take <colors> gem tokens
         And I end turn
-        Then I should have in my gem sack <colors> gem tokens
+        Then I should have in my gem sack "<colors>" gem tokens
         And in token piles should be "<onyx>" onyx, "<ruby>" ruby, "<sapphire>" sapphire, "<diamond>" diamond, "<emerald>" emerald gem tokens and "<gold>" gold tokens
         Examples:
             | colors                 | onyx | ruby | sapphire | diamond | emerald | gold |

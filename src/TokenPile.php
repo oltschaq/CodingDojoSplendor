@@ -1,7 +1,7 @@
 <?php
 
 
-namespace Tests;
+namespace App;
 
 
 use http\Encoding\Stream;
