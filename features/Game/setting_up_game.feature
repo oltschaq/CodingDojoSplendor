@@ -2,6 +2,7 @@ Feature: Setting up a game
     In order to be able to play this marvelous game with friends
     As a Host
     I want to setup a game for players
+    After the game is set up - the tokens are set up automatically
 
     Scenario: Setting up a game
         When I set up a game for players "jesse@pinkman.com", "walter@white.com", "mike@ehrmantraut.com" and "skyler@white.com"
@@ -25,3 +26,13 @@ Feature: Setting up a game
             | number | reason       |
             | 1      | "not enough" |
             | 5      | "too many"   |
+
+    Scenario Outline: Setting up tokens in a game
+        When the game is set up with <number> players
+        Then the tokens are set up in such amounts <onyx>, <ruby>, <sapphire>, <diamond>, <emerald>, <gold>
+
+        Examples:
+            | number | onyx | ruby | sapphire | diamond | emerald | gold |
+            | 4      | 7    | 7    | 7        | 7       | 7       | 5    |
+            | 3      | 5    | 5    | 5        | 5       | 5       | 5    |
+            | 2      | 4    | 4    | 4        | 4       | 4       | 5    |
