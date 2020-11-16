@@ -23,7 +23,7 @@ final class Game
         'gold' => 5
     ];
 
-    public function __construct(string ...$players)
+    public function __construct(Player ...$players)
     {
         $this->players = $players;
         $numberOfPlayers = count($players);

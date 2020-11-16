@@ -29,7 +29,7 @@ Feature: Setting up a game
 
     Scenario Outline: Setting up tokens in a game
         When the game is set up with <number> players
-        Then the tokens are set up in such amounts <onyx>, <ruby>, <sapphire>, <diamond>, <emerald>, <gold>
+        Then the token pile has such amounts of tokens <onyx>, <ruby>, <sapphire>, <diamond>, <emerald>, <gold>
 
         Examples:
             | number | onyx | ruby | sapphire | diamond | emerald | gold |

@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Tests;
 
 use App\Game;
+use App\Player;
 use Behat\Behat\Context\Context;
 use Behat\Behat\Tester\Exception\PendingException;
 use Webmozart\Assert\Assert;
@@ -35,7 +36,7 @@ class GameContext implements Context
 
         for ($x = 1; $x <= $number; $x++) {
             $playerName = $this->randomName();
-            $players[] = $playerName;
+            $players[] = new Player($playerName);
         }
 
         return $players;
@@ -46,7 +47,7 @@ class GameContext implements Context
      */
     public function iSetUpTheGameForFollowingPlayers(string $player1, string $player2, string $player3, string $player4): void
     {
-        $this->game = new Game($player1, $player2, $player3, $player4);
+        $this->game = new Game(new Player($player1), new Player($player2), new Player($player3), new Player($player4));
     }
 
     /**
@@ -54,7 +55,7 @@ class GameContext implements Context
      */
     public function theGameIsSetUpForFollowingPlayers(string $player1, string $player2, string $player3, string $player4): void
     {
-        $expectedPlayers = [$player1, $player2, $player3, $player4];
+        $expectedPlayers = [new Player($player1), new Player($player2), new Player($player3), new Player($player4)];
         Assert::eq($this->game->players(), $expectedPlayers);
     }
 
@@ -111,9 +112,9 @@ class GameContext implements Context
     }
 
     /**
-     * @Then the tokens are set up in such amounts :onyx, :ruby, :sapphire, :diamond, :emerald, :gold
+     * @Then the token pile has such amounts of tokens :onyx, :ruby, :sapphire, :diamond, :emerald, :gold
      */
-    public function theTokensAreSetUpInSuchAmounts($onyx, $ruby, $sapphire, $diamond, $emerald, $gold)
+    public function theTokenPileHasSuchAmountsOfTokens($onyx, $ruby, $sapphire, $diamond, $emerald, $gold)
     {
         Assert::eq($this->game->tokens()['onyx'], $onyx);
         Assert::eq($this->game->tokens()['ruby'], $ruby);
@@ -121,14 +122,5 @@ class GameContext implements Context
         Assert::eq($this->game->tokens()['diamond'], $diamond);
         Assert::eq($this->game->tokens()['emerald'], $emerald);
         Assert::eq($this->game->tokens()['gold'], $gold);
-    }
-
-    /**
-     * @Given current turn is for the :player merchant
-     */
-    public function currentTurnIsForTheMerchant($player)
-    {
-        $players = $this->game->players();
-        var_dump($players);
     }
 }

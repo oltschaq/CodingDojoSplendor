@@ -4,7 +4,29 @@ Feature: Taking tokens from assortment
     I want to gather tokens
 
     Background:
-        Given the game has been set up for "jesse@pinkman.com", "walter@white.com", "mike@ehrmantraut.com" and "skyler@white.com" merchants
+        Given I set up a game for players "jesse@pinkman.com", "walter@white.com", "mike@ehrmantraut.com" and "skyler@white.com"
+
+    Scenario: Taking two gem tokens of the same color
+        When player "jesse@pinkman.com" takes two gem tokens of "onyx" color
+        Then the token pile has such amounts of tokens "5", "7", "7", "7", "7", "5"
+        And player "jesse@pinkman.com" has "2" tokens of "onyx" color
+
+
+
+
+    @todo
+    Scenario Outline: Taking two gem tokens of the same color
+        When I take <colors> gem tokens
+        And I end turn
+        Then I should have in my gem sack <colors> gem tokens
+        And in token piles should be <onyx> onyx, <ruby> ruby, <sapphire> sapphire, <diamond> diamond, <emerald> emerald gem tokens and <gold> gold tokens
+        Examples:
+            | colors             | onyx | ruby | sapphire | diamond | emerald | gold |
+            | onyx, onyx         | 5    | 7    | 7        | 7       | 7       | 5    |
+            | ruby, ruby         | 7    | 5    | 7        | 7       | 7       | 5    |
+            | sapphire, sapphire | 7    | 7    | 5        | 7       | 7       | 5    |
+            | diamond, diamond   | 7    | 7    | 7        | 5       | 7       | 5    |
+            | emerald, emerald   | 7    | 7    | 7        | 7       | 5       | 5    |
 
     @todo
     Scenario Outline: Taking three gem tokens of different color
@@ -17,21 +39,6 @@ Feature: Taking tokens from assortment
             | colors                 | onyx | ruby | sapphire | diamond | emerald | gold |
             | onyx, ruby, sapphire   | 6    | 6    | 6        | 7       | 7       | 5    |
             | diamond, emerald, ruby | 7    | 6    | 7        | 6       | 6       | 5    |
-
-    @todo
-    Scenario Outline: Taking two gem tokens of the same color
-        Given current turn is for the "jesse@pinkman.com" merchant
-        When I take <colors> gem tokens
-        And I end turn
-        Then I should have in my gem sack <colors> gem tokens
-        And in token piles should be <onyx> onyx, <ruby> ruby, <sapphire> sapphire, <diamond> diamond, <emerald> emerald gem tokens and <gold> gold tokens
-        Examples:
-            | colors             | onyx | ruby | sapphire | diamond | emerald | gold |
-            | onyx, onyx         | 5    | 7    | 7        | 7       | 7       | 5    |
-            | ruby, ruby         | 7    | 5    | 7        | 7       | 7       | 5    |
-            | sapphire, sapphire | 7    | 7    | 5        | 7       | 7       | 5    |
-            | diamond, diamond   | 7    | 7    | 7        | 5       | 7       | 5    |
-            | emerald, emerald   | 7    | 7    | 7        | 7       | 5       | 5    |
 
     @todo
     Scenario Outline: Trying to take gem tokens where there is not enough of them
