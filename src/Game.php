@@ -70,4 +70,22 @@ final class Game
     {
         return $this->tokens;
     }
+
+    public function player(string $name): Player
+    {
+        foreach ($this->players as $player) {
+            if ($name == $player->name()) {
+                return $player;
+            }
+        }
+    }
+
+    public function subtractTwoTokens(string $color): void
+    {
+        if ($this->tokens[$color] < 4) {
+            throw new \Exception("There has to be at least 4 tokens of this color left to take 2 of them");
+        } else {
+            $this->tokens[$color] -= 2;
+        }
+    }
 }

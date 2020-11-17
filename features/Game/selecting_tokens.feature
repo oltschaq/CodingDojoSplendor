@@ -1,4 +1,4 @@
-Feature: Taking tokens from assortment
+Feature: Taking tokens from token piles
     In order to be able to purchase development cards
     As a Merchant
     I want to gather tokens
@@ -11,8 +11,11 @@ Feature: Taking tokens from assortment
         Then the token pile has such amounts of tokens "5", "7", "7", "7", "7", "5"
         And player "jesse@pinkman.com" has "2" tokens of "onyx" color
 
-
-
+    Scenario: Trying to take two gem tokens of the same color when there is less than four of them left
+        When player "jesse@pinkman.com" takes two gem tokens of "onyx" color
+        When player "walter@white.com" takes two gem tokens of "onyx" color
+        When player "mike@ehrmantraut.com" tries to take two gem tokens of "onyx" color
+        Then the tokens can not be taken because there are less than four of them left
 
     @todo
     Scenario Outline: Taking two gem tokens of the same color

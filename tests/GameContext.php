@@ -114,7 +114,7 @@ class GameContext implements Context
     /**
      * @Then the token pile has such amounts of tokens :onyx, :ruby, :sapphire, :diamond, :emerald, :gold
      */
-    public function theTokenPileHasSuchAmountsOfTokens($onyx, $ruby, $sapphire, $diamond, $emerald, $gold)
+    public function theTokenPileHasSuchAmountsOfTokens(int $onyx, int $ruby, int $sapphire, int $diamond, int $emerald, int $gold): void
     {
         Assert::eq($this->game->tokens()['onyx'], $onyx);
         Assert::eq($this->game->tokens()['ruby'], $ruby);
@@ -122,5 +122,44 @@ class GameContext implements Context
         Assert::eq($this->game->tokens()['diamond'], $diamond);
         Assert::eq($this->game->tokens()['emerald'], $emerald);
         Assert::eq($this->game->tokens()['gold'], $gold);
+    }
+
+    /**
+     * @When player :name takes two gem tokens of :color color
+     */
+    public function playerTakesTwoGemTokensOfColor(string $name, string $color): void
+    {
+        $this->game->player($name)->takeTwoTokens($color, $this->game);
+    }
+
+    /**
+     * @When player :name tries to take two gem tokens of :color color
+     */
+    public function playerTriesToTakeTwoGemTokensOfColor(string $name, string $color): void
+    {
+        try {
+            $this->game->player($name)->takeTwoTokens($color, $this->game);
+        } catch (\Exception $e) {
+            $this->message = $e->getMessage();
+        }
+    }
+
+    /**
+     * @Given player :name has :amount tokens of :color color
+     */
+    public function playerHasTokensOfColor($name, $amount, $color): void
+    {
+        $playersTokens = $this->game->player($name)->tokens();
+
+        Assert::keyExists($playersTokens, $color);
+        Assert::eq($playersTokens[$color], $amount);
+    }
+
+    /**
+     * @Then the tokens can not be taken because there are less than four of them left
+     */
+    public function theTokensCanNotBeTakenBecauseThereAreLessThanFourOfThemLeft(): void
+    {
+        Assert::eq($this->message, "There has to be at least 4 tokens of this color left to take 2 of them");
     }
 }

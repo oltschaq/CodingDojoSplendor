@@ -23,4 +23,27 @@ final class Player
     {
         $this->name = $name;
     }
+
+    /**
+     * @return string
+     */
+    public function name(): string
+    {
+        return $this->name;
+    }
+
+    /**
+     * @return string[]
+     */
+    public function tokens(): array
+    {
+        return $this->tokens;
+    }
+
+    public function takeTwoTokens(string $color, Game $game): void
+    {
+        $game->subtractTwoTokens($color);
+
+        $this->tokens[$color] += 2;
+    }
 }
