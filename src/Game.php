@@ -6,6 +6,13 @@ namespace App;
 
 final class Game
 {
+    public const ONYX = 'onyx';
+    public const RUBY = 'ruby';
+    public const SAPPHIRE = 'sapphire';
+    public const DIAMOND = 'diamond';
+    public const EMERALD = 'emerald';
+    public const GOLD = 'gold';
+
     /**
      * @var string[]
      */
@@ -15,12 +22,12 @@ final class Game
      * @var string[]
      */
     private array $tokens = [
-        'onyx' => 7,
-        'ruby' => 7,
-        'sapphire' => 7,
-        'diamond' => 7,
-        'emerald' => 7,
-        'gold' => 5
+        self::ONYX => 7,
+        self::RUBY => 7,
+        self::SAPPHIRE => 7,
+        self::DIAMOND => 7,
+        self::EMERALD => 7,
+        self::GOLD => 5
     ];
 
     public function __construct(Player ...$players)
@@ -36,21 +43,21 @@ final class Game
 
         if ($numberOfPlayers === 3) {
             $this->tokens = [
-                'onyx' => 5,
-                'ruby' => 5,
-                'sapphire' => 5,
-                'diamond' => 5,
-                'emerald' => 5,
-                'gold' => 5
+                self::ONYX => 5,
+                self::RUBY => 5,
+                self::SAPPHIRE => 5,
+                self::DIAMOND => 5,
+                self::EMERALD => 5,
+                self::GOLD => 5
             ];
         } elseif ($numberOfPlayers === 2) {
             $this->tokens = [
-                'onyx' => 4,
-                'ruby' => 4,
-                'sapphire' => 4,
-                'diamond' => 4,
-                'emerald' => 4,
-                'gold' => 5
+                self::ONYX => 4,
+                self::RUBY => 4,
+                self::SAPPHIRE => 4,
+                self::DIAMOND => 4,
+                self::EMERALD => 4,
+                self::GOLD => 5
             ];
         }
     }

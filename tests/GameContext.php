@@ -7,7 +7,6 @@ namespace Tests;
 use App\Game;
 use App\Player;
 use Behat\Behat\Context\Context;
-use Behat\Behat\Tester\Exception\PendingException;
 use Webmozart\Assert\Assert;
 
 class GameContext implements Context
@@ -116,12 +115,12 @@ class GameContext implements Context
      */
     public function theTokenPileHasSuchAmountsOfTokens(int $onyx, int $ruby, int $sapphire, int $diamond, int $emerald, int $gold): void
     {
-        Assert::eq($this->game->tokens()['onyx'], $onyx);
-        Assert::eq($this->game->tokens()['ruby'], $ruby);
-        Assert::eq($this->game->tokens()['sapphire'], $sapphire);
-        Assert::eq($this->game->tokens()['diamond'], $diamond);
-        Assert::eq($this->game->tokens()['emerald'], $emerald);
-        Assert::eq($this->game->tokens()['gold'], $gold);
+        Assert::eq($this->game->tokens()[Game::ONYX], $onyx);
+        Assert::eq($this->game->tokens()[Game::RUBY], $ruby);
+        Assert::eq($this->game->tokens()[Game::SAPPHIRE], $sapphire);
+        Assert::eq($this->game->tokens()[Game::DIAMOND], $diamond);
+        Assert::eq($this->game->tokens()[Game::EMERALD], $emerald);
+        Assert::eq($this->game->tokens()[Game::GOLD], $gold);
     }
 
     /**
