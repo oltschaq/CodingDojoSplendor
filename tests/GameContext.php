@@ -137,7 +137,7 @@ class GameContext implements Context
      */
     public function playerTakesTwoGemTokensOfColor(string $name, string $color): void
     {
-        $this->game->player($name)->takeTwoTokens($color, $this->game);
+        $this->game->takeTwoTokens($color, $this->game->player($name));
     }
 
     /**
@@ -146,7 +146,7 @@ class GameContext implements Context
     public function playerTriesToTakeTwoGemTokensOfColor(string $name, string $color): void
     {
         try {
-            $this->game->player($name)->takeTwoTokens($color, $this->game);
+            $this->game->takeTwoTokens($color, $this->game->player($name));
         } catch (\Exception $exception) {
             $this->message = $exception->getMessage();
         }
@@ -192,7 +192,7 @@ class GameContext implements Context
      */
     public function playerTakesThreeGemTokensOfColors($name, $color1, $color2, $color3)
     {
-        $this->game->player($name)->takeThreeTokens($color1, $color2, $color3, $this->game);
+        $this->game->takeThreeTokens($color1, $color2, $color3, $this->game->player($name));
     }
 
     /**
@@ -201,7 +201,7 @@ class GameContext implements Context
     public function playerTriesToTakeThreeGemTokensOfColors($name, $color1, $color2, $color3)
     {
         try {
-            $this->game->player($name)->takeThreeTokens($color1, $color2, $color3, $this->game);
+            $this->game->takeThreeTokens($color1, $color2, $color3, $this->game->player($name));
         } catch (\Exception $exception) {
             $this->message = $exception->getMessage();
         }

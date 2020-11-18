@@ -87,7 +87,7 @@ final class Game
         }
     }
 
-    public function subtractTwoTokens(string $color): void
+    public function takeTwoTokens(string $color, Player $player): void
     {
         if ($this->tokens[$color] < 4) {
             throw new \Exception("There has to be at least 4 tokens of this color left to take 2 of them");
@@ -95,10 +95,11 @@ final class Game
             throw new \Exception("There are no tokens of this color left");
         } else {
             $this->tokens[$color] -= 2;
+            $this->player($player->name())->addTwoTokens($color);
         }
     }
 
-    public function subtractThreeTokens(string $color1, string $color2, string $color3): void
+    public function takeThreeTokens(string $color1, string $color2, string $color3, Player $player): void
     {
         if ($color1 == $color2 || $color1 == $color3 || $color2 == $color3) {
             throw new \Exception("Each color has to be different to take 3 gems");
@@ -113,5 +114,7 @@ final class Game
                 $this->tokens[$color] -= 1;
             }
         }
+
+        $this->player($player->name())->addThreeTokens($color1, $color2, $color3);
     }
 }

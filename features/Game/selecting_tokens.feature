@@ -16,11 +16,9 @@ Feature: Taking tokens from token piles
         When player "walter@white.com" tries to take two gem tokens of "onyx" color
         Then the tokens can not be taken because there are less than four of them left
 
-#    ?????
     @todo
     Scenario: Trying to take two tokens of gold color
 
-#    ?????
     @todo
     Scenario: Trying to take three tokens one of which is of gold color
 
@@ -31,15 +29,16 @@ Feature: Taking tokens from token piles
         And player "jesse@pinkman.com" has "1" tokens of "ruby" color
         And player "jesse@pinkman.com" has "1" tokens of "sapphire" color
 
-    Scenario: Trying to take three gem tokens when the colors are not different
-        When player "jesse@pinkman.com" tries to take three gem tokens of colors "onyx", "onyx" and "onyx"
+    Scenario Outline: Trying to take three gem tokens when the colors are not different
+        When player "<name>" tries to take three gem tokens of colors "<color1>", "<color2>" and "<color3>"
         Then the tokens can not be taken because each color has to be different
-        When player "jesse@pinkman.com" tries to take three gem tokens of colors "onyx", "onyx" and "diamond"
-        Then the tokens can not be taken because each color has to be different
-        When player "jesse@pinkman.com" tries to take three gem tokens of colors "onyx", "diamond" and "onyx"
-        Then the tokens can not be taken because each color has to be different
-        When player "jesse@pinkman.com" tries to take three gem tokens of colors "diamond", "onyx" and "onyx"
-        Then the tokens can not be taken because each color has to be different
+
+        Examples:
+            | name              | color1  | color2  | color3  |
+            | jesse@pinkman.com | diamond | onyx    | onyx    |
+            | jesse@pinkman.com | onyx    | diamond | onyx    |
+            | jesse@pinkman.com | onyx    | onyx    | diamond |
+            | jesse@pinkman.com | onyx    | onyx    | onyx    |
 
     Scenario: Trying to take gem tokens when there are no tokens left
         When player "jesse@pinkman.com" takes three gem tokens of colors "onyx", "ruby" and "sapphire"
