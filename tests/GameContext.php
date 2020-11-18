@@ -184,7 +184,7 @@ class GameContext implements Context
      */
     public function theTokensCanNotBeTakenBecauseThereAreNoTokensOfThisColorLeft($color): void
     {
-        Assert::eq($this->message, "There are no tokens of this color left");
+        Assert::eq($this->message, sprintf("There are no tokens of %s color left", $color));
     }
 
     /**

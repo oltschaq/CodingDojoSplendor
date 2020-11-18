@@ -109,7 +109,7 @@ final class Game
 
         foreach ($colors as $color) {
             if ($this->tokens[$color] == 0) {
-                throw new \Exception("There are no tokens of this color left");
+                throw new \Exception(sprintf("There are no tokens of %s color left", $color));
             } else {
                 $this->tokens[$color] -= 1;
             }
