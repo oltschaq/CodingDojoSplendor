@@ -4,18 +4,50 @@ Feature: Taking tokens from token piles
     I want to gather tokens
 
     Background:
-        Given I set up a game for players "jesse@pinkman.com", "walter@white.com", "mike@ehrmantraut.com" and "skyler@white.com"
+        Given I set up a game for players "jesse@pinkman.com" and "walter@white.com"
 
     Scenario: Taking two gem tokens of the same color
         When player "jesse@pinkman.com" takes two gem tokens of "onyx" color
-        Then the token pile has such amounts of tokens "5", "7", "7", "7", "7", "5"
+        Then the token pile has such amounts of tokens "2", "4", "4", "4", "4", "5"
         And player "jesse@pinkman.com" has "2" tokens of "onyx" color
 
     Scenario: Trying to take two gem tokens of the same color when there is less than four of them left
         When player "jesse@pinkman.com" takes two gem tokens of "onyx" color
-        When player "walter@white.com" takes two gem tokens of "onyx" color
-        When player "mike@ehrmantraut.com" tries to take two gem tokens of "onyx" color
+        When player "walter@white.com" tries to take two gem tokens of "onyx" color
         Then the tokens can not be taken because there are less than four of them left
+
+#    ?????
+    @todo
+    Scenario: Trying to take two tokens of gold color
+
+#    ?????
+    @todo
+    Scenario: Trying to take three tokens one of which is of gold color
+
+    Scenario: Taking three gem tokens
+        When player "jesse@pinkman.com" takes three gem tokens of colors "onyx", "ruby" and "sapphire"
+        Then the token pile has such amounts of tokens "3", "3", "3", "4", "4", "5"
+        And player "jesse@pinkman.com" has "1" tokens of "onyx" color
+        And player "jesse@pinkman.com" has "1" tokens of "ruby" color
+        And player "jesse@pinkman.com" has "1" tokens of "sapphire" color
+
+    Scenario: Trying to take three gem tokens when the colors are not different
+        When player "jesse@pinkman.com" tries to take three gem tokens of colors "onyx", "onyx" and "onyx"
+        Then the tokens can not be taken because each color has to be different
+        When player "jesse@pinkman.com" tries to take three gem tokens of colors "onyx", "onyx" and "diamond"
+        Then the tokens can not be taken because each color has to be different
+        When player "jesse@pinkman.com" tries to take three gem tokens of colors "onyx", "diamond" and "onyx"
+        Then the tokens can not be taken because each color has to be different
+        When player "jesse@pinkman.com" tries to take three gem tokens of colors "diamond", "onyx" and "onyx"
+        Then the tokens can not be taken because each color has to be different
+
+    Scenario: Trying to take gem tokens when there are no tokens left
+        When player "jesse@pinkman.com" takes three gem tokens of colors "onyx", "ruby" and "sapphire"
+        And player "walter@white.com" takes three gem tokens of colors "onyx", "ruby" and "sapphire"
+        And player "jesse@pinkman.com" takes three gem tokens of colors "onyx", "ruby" and "sapphire"
+        And player "walter@white.com" takes three gem tokens of colors "onyx", "ruby" and "sapphire"
+        And player "jesse@pinkman.com" tries to take three gem tokens of colors "onyx", "diamond" and "emerald"
+        Then the tokens can not be taken because there are no tokens of "onyx" color left
 
     @todo
     Scenario Outline: Taking two gem tokens of the same color

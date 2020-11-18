@@ -7,6 +7,7 @@ namespace Tests;
 use App\Game;
 use App\Player;
 use Behat\Behat\Context\Context;
+use Behat\Behat\Tester\Exception\PendingException;
 use Webmozart\Assert\Assert;
 
 class GameContext implements Context
@@ -47,6 +48,14 @@ class GameContext implements Context
     public function iSetUpTheGameForFollowingPlayers(string $player1, string $player2, string $player3, string $player4): void
     {
         $this->game = new Game(new Player($player1), new Player($player2), new Player($player3), new Player($player4));
+    }
+
+    /**
+     * @When I set up a game for players :player1 and :player2
+     */
+    public function iSetUpTheGameForPlayers(string $player1, string $player2): void
+    {
+        $this->game = new Game(new Player($player1), new Player($player2));
     }
 
     /**
@@ -138,8 +147,8 @@ class GameContext implements Context
     {
         try {
             $this->game->player($name)->takeTwoTokens($color, $this->game);
-        } catch (\Exception $e) {
-            $this->message = $e->getMessage();
+        } catch (\Exception $exception) {
+            $this->message = $exception->getMessage();
         }
     }
 
@@ -160,5 +169,41 @@ class GameContext implements Context
     public function theTokensCanNotBeTakenBecauseThereAreLessThanFourOfThemLeft(): void
     {
         Assert::eq($this->message, "There has to be at least 4 tokens of this color left to take 2 of them");
+    }
+
+    /**
+     * @Then the tokens can not be taken because each color has to be different
+     */
+    public function theTokensCanNotBeTakenBecauseEachColorHasToBeDifferent(): void
+    {
+        Assert::eq($this->message, "Each color has to be different to take 3 gems");
+    }
+
+    /**
+     * @Then the tokens can not be taken because there are no tokens of :color color left
+     */
+    public function theTokensCanNotBeTakenBecauseThereAreNoTokensOfThisColorLeft($color): void
+    {
+        Assert::eq($this->message, "There are no tokens of this color left");
+    }
+
+    /**
+     * @When player :name takes three gem tokens of colors :color1, :color2 and :color3
+     */
+    public function playerTakesThreeGemTokensOfColors($name, $color1, $color2, $color3)
+    {
+        $this->game->player($name)->takeThreeTokens($color1, $color2, $color3, $this->game);
+    }
+
+    /**
+     * @When player :player tries to take three gem tokens of colors :color1, :color2 and :color3
+     */
+    public function playerTriesToTakeThreeGemTokensOfColors($name, $color1, $color2, $color3)
+    {
+        try {
+            $this->game->player($name)->takeThreeTokens($color1, $color2, $color3, $this->game);
+        } catch (\Exception $exception) {
+            $this->message = $exception->getMessage();
+        }
     }
 }

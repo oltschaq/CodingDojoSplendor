@@ -91,8 +91,27 @@ final class Game
     {
         if ($this->tokens[$color] < 4) {
             throw new \Exception("There has to be at least 4 tokens of this color left to take 2 of them");
+        } elseif ($this->tokens[$color] == 0) {
+            throw new \Exception("There are no tokens of this color left");
         } else {
             $this->tokens[$color] -= 2;
+        }
+    }
+
+    public function subtractThreeTokens(string $color1, string $color2, string $color3): void
+    {
+        if ($color1 == $color2 || $color1 == $color3 || $color2 == $color3) {
+            throw new \Exception("Each color has to be different to take 3 gems");
+        } else {
+            $colors = [$color1, $color2, $color3];
+        }
+
+        foreach ($colors as $color) {
+            if ($this->tokens[$color] == 0) {
+                throw new \Exception("There are no tokens of this color left");
+            } else {
+                $this->tokens[$color] -= 1;
+            }
         }
     }
 }
