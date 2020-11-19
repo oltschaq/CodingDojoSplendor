@@ -7,7 +7,6 @@ namespace Tests;
 use App\Game;
 use App\Player;
 use Behat\Behat\Context\Context;
-use Behat\Behat\Tester\Exception\PendingException;
 use Webmozart\Assert\Assert;
 
 class GameContext implements Context
@@ -101,7 +100,7 @@ class GameContext implements Context
     /**
      * @Then the game can not be set up because there are :reason players
      */
-    public function theGameCanNotBeSetUpBecauseOfReason($reason): void
+    public function theGameCanNotBeSetUpBecauseOfReason(string $reason): void
     {
         if ($reason === "not enough") {
             Assert::eq($this->message, "Not enough players");
@@ -133,20 +132,20 @@ class GameContext implements Context
     }
 
     /**
-     * @When player :name takes two gem tokens of :color color
+     * @When player takes two gem tokens of :color color
      */
-    public function playerTakesTwoGemTokensOfColor(string $name, string $color): void
+    public function playerTakesTwoGemTokensOfColor(string $color): void
     {
-        $this->game->takeTwoTokens($color, $this->game->player($name));
+        $this->game->takeTwoTokens($color);
     }
 
     /**
-     * @When player :name tries to take two gem tokens of :color color
+     * @When player tries to take two gem tokens of :color color
      */
-    public function playerTriesToTakeTwoGemTokensOfColor(string $name, string $color): void
+    public function playerTriesToTakeTwoGemTokensOfColor(string $color): void
     {
         try {
-            $this->game->takeTwoTokens($color, $this->game->player($name));
+            $this->game->takeTwoTokens($color);
         } catch (\Exception $exception) {
             $this->message = $exception->getMessage();
         }
@@ -155,7 +154,7 @@ class GameContext implements Context
     /**
      * @Given player :name has :amount tokens of :color color
      */
-    public function playerHasTokensOfColor($name, $amount, $color): void
+    public function playerHasTokensOfColor(string $name, int $amount, string $color): void
     {
         $playersTokens = $this->game->player($name)->tokens();
 
@@ -182,28 +181,36 @@ class GameContext implements Context
     /**
      * @Then the tokens can not be taken because there are no tokens of :color color left
      */
-    public function theTokensCanNotBeTakenBecauseThereAreNoTokensOfThisColorLeft($color): void
+    public function theTokensCanNotBeTakenBecauseThereAreNoTokensOfThisColorLeft(string $color): void
     {
         Assert::eq($this->message, sprintf("There are no tokens of %s color left", $color));
     }
 
     /**
-     * @When player :name takes three gem tokens of colors :color1, :color2 and :color3
+     * @When player takes three gem tokens of colors :color1, :color2 and :color3
      */
-    public function playerTakesThreeGemTokensOfColors($name, $color1, $color2, $color3)
+    public function playerTakesThreeGemTokensOfColors(string $color1, string $color2, string $color3): void
     {
-        $this->game->takeThreeTokens($color1, $color2, $color3, $this->game->player($name));
+        $this->game->takeThreeTokens($color1, $color2, $color3);
     }
 
     /**
-     * @When player :player tries to take three gem tokens of colors :color1, :color2 and :color3
+     * @When player tries to take three gem tokens of colors :color1, :color2 and :color3
      */
-    public function playerTriesToTakeThreeGemTokensOfColors($name, $color1, $color2, $color3)
+    public function playerTriesToTakeThreeGemTokensOfColors(string $color1, string $color2, string $color3): void
     {
         try {
-            $this->game->takeThreeTokens($color1, $color2, $color3, $this->game->player($name));
+            $this->game->takeThreeTokens($color1, $color2, $color3);
         } catch (\Exception $exception) {
             $this->message = $exception->getMessage();
         }
+    }
+
+    /**
+     * @Then current turn is for :name
+     */
+    public function currentTurnIsFor(string $name): void
+    {
+        Assert::eq($this->game->turnCurrent(), $this->game->player($name));
     }
 }

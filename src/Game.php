@@ -30,6 +30,12 @@ final class Game
         self::GOLD => 5
     ];
 
+    /**
+     * @var Player
+     */
+    private Player $playerMakingMove;
+
+
     public function __construct(Player ...$players)
     {
         $this->players = $players;
@@ -60,6 +66,8 @@ final class Game
                 self::GOLD => 5
             ];
         }
+
+        $this->playerMakingMove = $this->players()[0];
     }
 
     /**
@@ -87,20 +95,26 @@ final class Game
         }
     }
 
-    public function takeTwoTokens(string $color, Player $player): void
+    public function takeTwoTokens(string $color): void
     {
+        $player = $this->turnCurrent();
+
         if ($this->tokens[$color] < 4) {
             throw new \Exception("There has to be at least 4 tokens of this color left to take 2 of them");
         } elseif ($this->tokens[$color] == 0) {
             throw new \Exception("There are no tokens of this color left");
         } else {
             $this->tokens[$color] -= 2;
-            $this->player($player->name())->addTwoTokens($color);
+            $player->addTwoTokens($color);
         }
+
+        $this->turnEnd();
     }
 
-    public function takeThreeTokens(string $color1, string $color2, string $color3, Player $player): void
+    public function takeThreeTokens(string $color1, string $color2, string $color3): void
     {
+        $player = $this->turnCurrent();
+
         if ($color1 == $color2 || $color1 == $color3 || $color2 == $color3) {
             throw new \Exception("Each color has to be different to take 3 gems");
         } else {
@@ -115,6 +129,26 @@ final class Game
             }
         }
 
-        $this->player($player->name())->addThreeTokens($color1, $color2, $color3);
+        $player->addThreeTokens($color1, $color2, $color3);
+
+        $this->turnEnd();
+    }
+
+    public function turnCurrent(): Player
+    {
+        return $this->playerMakingMove;
+    }
+
+    public function turnEnd(): void
+    {
+        $key = array_search($this->playerMakingMove, $this->players);
+
+        $key += 1;
+
+        if (array_key_exists($key, $this->players)) {
+            $this->playerMakingMove = $this->players[$key];
+        } else {
+            $this->playerMakingMove = $this->players[0];
+        }
     }
 }
