@@ -171,6 +171,14 @@ class GameContext implements Context
     }
 
     /**
+     * @Then the tokens can not be taken because the color must be different than gold
+     */
+    public function theTokensCanNotBeTakenBecauseTheColorMustBeDifferentThanGold(): void
+    {
+        Assert::eq($this->message, "The color must be different than gold");
+    }
+
+    /**
      * @Then the tokens can not be taken because each color has to be different
      */
     public function theTokensCanNotBeTakenBecauseEachColorHasToBeDifferent(): void

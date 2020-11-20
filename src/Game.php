@@ -99,7 +99,9 @@ final class Game
     {
         $player = $this->turnCurrent();
 
-        if ($this->tokens[$color] < 4) {
+        if ($color == self::GOLD) {
+            throw new \Exception("The color must be different than gold");
+        } elseif ($this->tokens[$color] < 4) {
             throw new \Exception("There has to be at least 4 tokens of this color left to take 2 of them");
         } elseif ($this->tokens[$color] == 0) {
             throw new \Exception("There are no tokens of this color left");
@@ -115,7 +117,9 @@ final class Game
     {
         $player = $this->turnCurrent();
 
-        if ($color1 == $color2 || $color1 == $color3 || $color2 == $color3) {
+        if ($color1 == self::GOLD || $color2 == self::GOLD || $color3 == self::GOLD) {
+            throw new \Exception("The color must be different than gold");
+        } elseif ($color1 == $color2 || $color1 == $color3 || $color2 == $color3) {
             throw new \Exception("Each color has to be different to take 3 gems");
         } else {
             $colors = [$color1, $color2, $color3];
@@ -139,7 +143,7 @@ final class Game
         return $this->playerMakingMove;
     }
 
-    public function turnEnd(): void
+    private function turnEnd(): void
     {
         $key = array_search($this->playerMakingMove, $this->players);
 

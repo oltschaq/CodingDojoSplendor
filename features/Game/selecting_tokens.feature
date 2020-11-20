@@ -19,11 +19,10 @@ Feature: Taking tokens from token piles
         And player tries to take two gem tokens of "onyx" color
         Then the tokens can not be taken because there are less than four of them left
 
-    @todo
     Scenario: Trying to take two tokens of gold color
-
-    @todo
-    Scenario: Trying to take three tokens one of which is of gold color
+        When current turn is for "jesse@pinkman.com"
+        And player tries to take two gem tokens of "gold" color
+        Then the tokens can not be taken because the color must be different than gold
 
     Scenario: Taking three gem tokens
         When current turn is for "jesse@pinkman.com"
@@ -44,6 +43,11 @@ Feature: Taking tokens from token piles
             | onyx    | diamond | onyx    |
             | onyx    | onyx    | diamond |
             | onyx    | onyx    | onyx    |
+
+    Scenario: Trying to take three tokens including gold color
+        When current turn is for "jesse@pinkman.com"
+        When player tries to take three gem tokens of colors "gold", "diamond" and "sapphire"
+        Then the tokens can not be taken because the color must be different than gold
 
     Scenario: Trying to take gem tokens when there are no tokens left
         When current turn is for "jesse@pinkman.com"
