@@ -29,7 +29,7 @@ Feature: Setting up a game
             | 5      | "too many"   |
 
     Scenario Outline: Setting up tokens in a game
-        When the game is set up with <number> players
+        When I set up a game for <number> players
         Then the token pile has such amounts of tokens <onyx>, <ruby>, <sapphire>, <diamond>, <emerald>, <gold>
 
         Examples:

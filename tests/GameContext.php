@@ -110,15 +110,6 @@ class GameContext implements Context
     }
 
     /**
-     * @When the game is set up with :number players
-     */
-    public function theGameIsSetUpWithPlayers(int $number): void
-    {
-        $players = $this->generatePlayers($number);
-        $this->game = new Game(...$players);
-    }
-
-    /**
      * @Then the token pile has such amounts of tokens :onyx, :ruby, :sapphire, :diamond, :emerald, :gold
      */
     public function theTokenPileHasSuchAmountsOfTokens(int $onyx, int $ruby, int $sapphire, int $diamond, int $emerald, int $gold): void
